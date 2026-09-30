@@ -1,5 +1,9 @@
+
+.venv/
+.venv-1/
 .env
 .chroma/
 __pycache__/
-*.py[cod]
-.venv*/
+*.pyc
+*.pyo
+*.pyd
