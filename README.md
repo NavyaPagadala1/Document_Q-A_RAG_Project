@@ -1,133 +1,131 @@
-# Grounded Document Q&A (RAG)
+# RAG AI Project
 
-A local question-answering app that searches PDF and TXT documents and answers questions using the retrieved passages. Ask questions in a browser interface or use the optional command-line interface. Answers are restricted to supplied sources and include labels that map to source filenames and PDF page numbers (or text chunk sections).
+This project is a local Retrieval-Augmented Generation (RAG) application for asking questions about documents stored in the project folder. It supports both a browser interface and a command-line interface, and it answers questions using only the text retrieved from the source documents.
 
-## Tech Stack
+## What the app does
 
-- Python 3.11 or newer
-- Google Gen AI Python SDK 2.25.0 for embeddings and answer generation
-- `gemini-embedding-001` for document and question embeddings
-- ChromaDB 1.0.20 for persistent local vector storage with cosine distance
-- pypdf 5.1.0 for PDF text extraction
-- python-dotenv 1.0.1 for local environment configuration
-- Streamlit for the browser-based question and answer interface
-- ReportLab 4.2.5 for generating the included sample PDF (not needed to run the bot)
+- Reads PDF and TXT files from a local data folder
+- Splits large documents into overlapping text chunks
+- Creates embeddings using Google Gemini
+- Stores vectors locally in ChromaDB
+- Retrieves the most relevant passages for a question
+- Uses Gemini to generate a grounded answer with source references
 
-Install the pinned dependencies with `python -m pip install -r requirements.txt`.
+## Included project files
 
-## Architecture
+- `rag_bot.py` � core indexing and query logic
+- `streamlit_app.py` � Streamlit web app
+- `data/` � sample knowledge base documents
+- `scripts/generate_sample_pdf.py` � script to generate the sample PDF
+- `tests/test_rag_bot.py` � unit tests for chunking and citation behavior
+- `requirements.txt` � Python dependencies
 
-```mermaid
-flowchart LR
-    A[PDF and TXT files] --> B[Text extraction and cleanup]
-    B --> C[1200-character chunks with 180-character overlap]
-   C --> D[Gemini embeddings in batches of 64]
-    D --> E[Persistent ChromaDB collection]
-    F[User question] --> G[Question embedding]
-    G --> H[Top-k cosine retrieval]
-    E --> H
-    H --> I[Source-labeled passages]
-   I --> J[Gemini content generation]
-    J --> K[Grounded answer and citations]
+## Project structure
+
+```text
+RAG_AI_project/
++-- data/
+�   +-- community_energy.pdf
+�   +-- community_health.txt
+�   +-- secure_software.txt
+�   +-- urban_heat.txt
++-- scripts/
+�   +-- generate_sample_pdf.py
++-- tests/
+�   +-- test_rag_bot.py
++-- .chroma/
++-- .env
++-- .env.example
++-- rag_bot.py
++-- streamlit_app.py
++-- requirements.txt
++-- README.md
++-- .gitignore
 ```
 
-The ingestion flow extracts text from each PDF page separately so page numbers remain available for citations. TXT files are treated as text sources and cited by chunk section. Re-running `ingest` replaces the contents of the local collection so removed or edited documents do not leave stale chunks behind. Embedding inputs are sent as batches of up to 64 texts, rather than one request per chunk.
+## Tech stack
 
-## Chunking Strategy
+- Python 3.11+
+- Streamlit
+- Google Gen AI SDK
+- ChromaDB
+- pypdf
+- python-dotenv
+- ReportLab
 
-The bot uses fixed-size character windows of up to 1,200 characters, preferring paragraph boundaries when they fall near the end of a window. Consecutive windows overlap by 180 characters to preserve context across boundaries. Character-based chunking is simple and predictable for a small mixed-format corpus; it does not guarantee equal token counts, so unusually long passages may be split mid-sentence.
+## Setup
 
-## Embeddings and Vector Database
+1. Open a terminal in the project folder.
+2. Create and activate a virtual environment:
 
-`gemini-embedding-001` provides retrieval-oriented vectors through Google's Gemini Developer API. Documents use the `RETRIEVAL_DOCUMENT` task type and questions use `RETRIEVAL_QUERY`. ChromaDB stores the vectors, source text, and metadata on disk under `.chroma/`; cosine distance is used for nearest-neighbor search. The chat model defaults to `gemini-3.8-flash` and can be changed with an environment variable. The vector store is local; embedding and answer generation require network access and a Gemini API key. Re-ingest documents after changing embedding providers or models.
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-## Included Documents
+3. Install dependencies:
 
-The `data/` folder contains four original documents, each longer than 500 words:
+```powershell
+python -m pip install -r requirements.txt
+```
 
-- `community_energy.pdf`: local energy systems, storage, participation, resilience, and governance
-- `urban_heat.txt`: heat risk, cooling interventions, equity, and evaluation
-- `secure_software.txt`: practical security practices across the software lifecycle
-- `community_health.txt`: community health service design, privacy, partnerships, and evaluation
+4. Create a `.env` file and add your Gemini API key:
 
-The PDF is generated by `python scripts/generate_sample_pdf.py`. Its source text is kept in that script so the sample corpus contains four documents rather than a duplicate TXT/PDF pair.
+```powershell
+Copy-Item .env.example .env
+```
 
-## Setup and Usage
+Then set:
 
-1. Clone the repository and enter the project folder:
+```env
+GEMINI_API_KEY=your_api_key_here
+```
 
-   ```powershell
-   git clone <repository-url>
-   cd RAG_AI_project
-   ```
+## Run the app
 
-2. Create and activate a virtual environment, then install dependencies:
+### Streamlit web app
 
-   ```powershell
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   python -m pip install -r requirements.txt
-   ```
+```powershell
+python -m streamlit run streamlit_app.py
+```
 
-   On macOS or Linux, activate with `source .venv/bin/activate`.
+Use the sidebar to index the documents in `data/`, then ask questions in the chat area.
 
-3. Create `.env` from the example and set your API key. Never commit `.env` or a real key:
+### Command line
 
-   ```powershell
-   Copy-Item .env.example .env
-   ```
+```powershell
+python rag_bot.py ingest
+python rag_bot.py ask "How can a city improve resilience during outages?"
+```
 
-   Set `GEMINI_API_KEY` in `.env` to your Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
+You can also start a chat session:
 
-4. Start the browser interface:
+```powershell
+python rag_bot.py chat
+```
 
-   ```powershell
-   python -m streamlit run streamlit_app.py
-   ```
+## How the app works
 
-   In the sidebar, select **Index documents** to build or refresh the local search index. Then ask questions in the chat box. The first indexing run and every answer require a Gemini API key and network access.
+1. It reads all supported files from the `data/` directory.
+2. It splits the text into overlapping chunks.
+3. It embeds each chunk with Gemini.
+4. It stores those vectors in a local ChromaDB collection.
+5. For each user question, it retrieves the most relevant chunks.
+6. It sends the retrieved passages plus the question to Gemini and returns a grounded answer with source references.
 
-5. The command-line interface is also available:
+## Notes
 
-   ```powershell
-   python rag_bot.py ask "How can a city make cooling centers more accessible?"
-   python rag_bot.py chat
-   ```
+- The project is designed for local document search and Q&A.
+- It requires an active Gemini API key to generate embeddings and answers.
+- The vector database is stored in `.chroma/` and is refreshed when you re-index the documents.
+- This app is intended for local use and is not a production multi-user system.
 
-   In chat mode, enter `exit` to quit. Use `python rag_bot.py ask --help` to see available options, including `--top-k`. To ingest another folder, pass `--data-dir path\to\documents`; PDF and TXT files are discovered recursively.
+## Testing
 
-## Environment Variables
-
-| Variable | Required | Default | Purpose |
-|---|---|---|---|
-| `GEMINI_API_KEY` | Yes | None | Authenticates Gemini embedding and generation calls |
-| `GEMINI_CHAT_MODEL` | No | `gemini-3.8-flash` | Answer generation model |
-| `GEMINI_EMBEDDING_MODEL` | No | `gemini-embedding-001` | Embedding model; use the same model for ingestion and queries |
-| `CHROMA_PERSIST_DIR` | No | `.chroma` | Local persistent vector-store directory |
-
-## Example Queries
-
-- “What should a city measure to evaluate its heat action plan?” Expected theme: health outcomes, indoor temperatures, shade, service use, energy burden, and resident feedback.
-- “When does a neighborhood battery improve resilience?” Expected theme: outage duration, critical loads, islanding equipment, battery capacity, and safe reconnection.
-- “How should a small team handle production secrets?” Expected theme: avoid source control, use a secret manager or platform identity, limit access, and rotate after exposure.
-- “What makes a community health referral successful?” Expected theme: clear responsibility, consent-aware warm handoffs, confirmation of the next step, and follow-up.
-- “How can a community energy project avoid excluding renters?” Expected theme: alternative participation models, transparent eligibility, monitoring benefit distribution, and housing stability considerations.
-
-## Known Limitations
-
-- The system supports searchable text from PDF and TXT files only. Scanned PDFs without an OCR text layer are not readable, and DOCX is not supported.
-- Retrieval uses embeddings and cosine similarity without reranking, hybrid keyword search, or an explicit relevance threshold; similar wording can still retrieve an unhelpful passage.
-- Character windows are not token-aware and may split a sentence. PDF headers and footers are only lightly cleaned, and text extraction quality depends on the source PDF.
-- The answer model can still make mistakes. The prompt asks it to abstain when evidence is missing, but citations do not independently prove that each claim is supported; review important answers against the cited passages.
-- Gemini API access is required for ingestion and answers. Costs, rate limits, latency, and service availability depend on the selected account and models.
-- The app is intended for local single-user use. It has no authentication, multi-user isolation, or production-grade monitoring.
-
-## Tests
-
-Run the offline unit tests for chunking and citation metadata with:
+Run the project tests with:
 
 ```powershell
 python -m unittest discover -s tests -v
 ```
 
-The tests do not call Gemini or require a populated vector database.
+These tests validate chunking, citation formatting, and embedding behavior without requiring the Gemini API.
