@@ -1,0 +1,6 @@
+chromadb==1.0.20
+google-genai==2.25.0
+pypdf==5.1.0
+python-dotenv==1.0.1
+reportlab==4.2.5
+streamlit>=1.42,<2

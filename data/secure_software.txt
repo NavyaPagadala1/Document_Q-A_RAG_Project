@@ -1,0 +1,33 @@
+Secure Software Delivery: Principles for Small Engineering Teams
+
+Security as part of delivery
+
+Secure software is produced through repeatable decisions across design, implementation, testing, deployment, and maintenance. A small team does not need a large compliance department to make progress, but it does need clear ownership. Every service should have an accountable maintainer, a way to report vulnerabilities, a record of important dependencies, and a process for releasing fixes. Security work is more reliable when it is included in ordinary engineering routines instead of postponed until launch.
+
+Start by identifying the information the system handles and the consequences of misuse. A public status page and a payroll service do not have the same confidentiality or availability needs. A simple data flow diagram can show where information enters, which components process it, where it is stored, and which external systems receive it. Reviewing trust boundaries helps the team ask who can make each request and what assumptions are being made about that caller.
+
+Design and implementation
+
+Threat modeling is a focused conversation about how a feature could be abused. The team can list valuable assets, possible attackers, trust boundaries, and likely failure paths, then choose proportionate safeguards. The purpose is not to predict every attack. It is to make implicit assumptions visible while changes are still inexpensive. A short review before implementation can uncover risks such as unrestricted file uploads, excessive permissions, or sensitive data in logs.
+
+Input validation should occur at the boundary where untrusted data enters the system. Validation checks whether data has the expected type, size, and allowed values. Output encoding and parameterized database queries address different risks and should not be confused with input validation. Authorization must be checked on the server for every protected operation; hiding a button in a user interface does not prevent a caller from invoking the underlying endpoint.
+
+Authentication identifies a user or service, while authorization determines which actions that identity may perform. Access should follow the least-privilege principle: grant only the permissions needed for a task and remove them when no longer required. Service identities should be distinct from human accounts, and production credentials should not be shared across unrelated applications. Administrative actions benefit from stronger authentication and clear audit records.
+
+Secrets such as API tokens, signing keys, and database passwords should not be committed to source control. Local development can use ignored environment files, while deployed services should obtain secrets from an approved secret manager or platform identity. Teams should rotate credentials after suspected exposure and avoid printing them in diagnostic output. Secret scanning is useful, but it cannot replace careful access control and incident response.
+
+Dependencies and verification
+
+Third-party libraries save time but become part of the application's attack surface. Teams should know which packages are direct dependencies, how transitive dependencies are selected, and whether maintainers publish security updates. Lock files make builds more repeatable. Automated vulnerability alerts help identify known issues, but a team still needs to evaluate whether an affected component is used and choose a supported patched release. Unmaintained packages deserve a replacement plan even when no current alert exists.
+
+Testing should include security-relevant behavior, not only successful user journeys. Unit tests can verify authorization decisions and input constraints. Integration tests can check that database access follows expected boundaries. Static analysis and dependency scanning catch some classes of mistakes early. Dynamic testing can reveal problems in a running service, but no single scanner proves that an application is secure. Findings need owners, severity, deadlines, and a documented exception process.
+
+Code review is a practical control when reviewers ask about data exposure, permission checks, error handling, and new dependencies. Reviewers should look for unsafe defaults and missing failure paths as well as obvious secrets. Small changes are easier to reason about than large changesets. When a change modifies a trust boundary, the design decision should be recorded so future maintainers know why the control exists.
+
+Deployment and response
+
+Production systems should run with only the privileges and network access they need. Debug endpoints should not be exposed accidentally, error messages should avoid leaking internal details, and logs should be useful without storing unnecessary personal information. Updates should be tested and released through a process that supports rollback. Monitoring should alert on suspicious patterns while avoiding an unmanageable stream of low-value notifications.
+
+An incident plan should say who coordinates response, how systems can be isolated, where trustworthy backups are stored, and how affected users will be informed. Teams should practice restoring from backups; a backup that has never been restored is an assumption, not evidence. After an incident, a blameless review can identify missing controls and improve detection without hiding accountability for follow-up work.
+
+Security is a continuing property of a service, not a badge earned at release. Threats change, dependencies age, and business needs evolve. A team that assigns owners, records decisions, limits access, tests important controls, and responds promptly to new information can steadily reduce risk without pretending that all risk can be removed.

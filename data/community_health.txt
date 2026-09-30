@@ -1,0 +1,35 @@
+Community Health Programs: Designing Services People Can Use
+
+Start with community needsDefine a service that can be delivered
+
+A community health program works best when it begins with a clear description of the problem and the population affected. A high rate of missed appointments might reflect transportation barriers, limited clinic hours, language access, cost, or prior experiences with the health system. Choosing an intervention before understanding these causes can spend resources without improving access. Local data, interviews, listening sessions, and feedback from frontline staff provide complementary evidence.
+
+Community input should influence decisions, not merely validate a plan already written. Program organizers can include residents, patient advocates, clinicians, schools, social service organizations, and local leaders in defining goals and reviewing progress. Participants need to know how their feedback will be used and what decisions remain outside the program's control. Providing compensation, interpretation, childcare, and accessible meeting times makes participation more realistic for people who are often excluded.
+
+
+
+A program should state who is eligible, what support is offered, how people enroll, and where services are available. A referral is not complete simply because a phone number was given. With appropriate consent, a warm handoff can connect a person directly to the receiving organization and confirm that the next step is understood. Programs should also consider what happens when a service is full, a referral is declined, or a participant cannot be contacted.
+
+Trusted community health workers can help bridge clinical and community settings. Their responsibilities may include education, navigation, follow-up, and connection to social supports. Those responsibilities should be matched with training, supervision, manageable caseloads, safe working conditions, and fair compensation. Health workers should not be expected to solve structural barriers on their own or provide clinical care outside their qualifications.
+
+Communication needs to be accurate, understandable, and respectful. Materials should use plain language, explain unfamiliar terms, and be tested with intended readers. Translation alone may not account for differences in cultural expectations or local terminology. For urgent guidance, messages should identify what action to take, where to get help, and when to seek emergency care. Programs should avoid making promises about outcomes that evidence cannot support.
+
+Privacy and trust are essential. Collect only the information needed to provide and evaluate the service, explain why it is collected, and limit access to authorized staff. Consent should be meaningful and should not be bundled with unrelated permissions. Some people may fear that health information could affect employment, housing, immigration matters, or family relationships. Programs should explain applicable confidentiality protections and their limits before asking participants to share sensitive details.
+
+Partnership and operations
+
+Partnership agreements can clarify referral criteria, service capacity, contact points, data sharing, and procedures for unresolved cases. Organizations should decide who is responsible for follow-up and how quickly referrals should be acknowledged. Data-sharing arrangements need legal and privacy review, but operational coordination can often improve without exchanging detailed records. A minimum necessary approach reduces exposure while still allowing teams to coordinate care.
+
+Sustainable staffing and financing should be considered before enrollment expands. Short grants may fund a pilot but not the supervision, data systems, and follow-up that make a service dependable. A budget should include staff time, training, interpretation, transportation support, technology, and evaluation. If funding ends, participants and partner organizations need a transition plan rather than an abrupt closure.
+
+Measure progress and learn
+
+Evaluation begins with a logic model that links resources and activities to near-term outputs and intended outcomes. Outputs might include completed screenings or referrals; outcomes might include improved access or continuity of care. These measures answer different questions. A high number of referrals does not prove that people received a service, and improved attendance does not by itself establish a health benefit.
+
+Choose a small set of measures that staff can collect consistently. Useful indicators may include wait time, referral completion, participant experience, service availability by neighborhood, and outcomes relevant to the program's purpose. Define each measure, its data source, and the period covered. Establish a baseline before changes begin when feasible. Disaggregate results carefully to identify inequities, while protecting privacy when group sizes are small.
+
+Qualitative feedback helps explain why a measure changed. Participants may describe barriers that administrative data cannot capture, while staff may identify workload or workflow problems. Review findings with community partners and document changes made in response. If results are mixed, report both progress and uncertainty instead of selecting only favorable indicators.
+
+Programs should be prepared to adapt. A pilot can test recruitment, referral processes, and staffing assumptions, but results from one setting may not transfer directly to another. Expansion should follow evidence that the service is feasible, acceptable, and sufficiently resourced. Continuous improvement means making changes deliberately, checking their effects, and sharing learning with participants and partners.
+
+The foundation of an effective community health program is a dependable relationship between people and services. Clear goals, respectful communication, privacy protections, paid community expertise, and honest evaluation help turn a promising idea into a service that residents can find, trust, and use.
